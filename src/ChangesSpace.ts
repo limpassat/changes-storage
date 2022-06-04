@@ -1,4 +1,4 @@
-import { Stack } from "./Stack";
+import { ChangesStack } from "./ChangesStack";
 import { deepCopy } from "./deepCopy";
 import { deepEqual } from "./deepEqual";
 
@@ -12,13 +12,13 @@ type StackIdent = string;
 
 export class ChangesSpace {
 
-  private stackMap = new Map<StackIdent, Stack<ChangeRecord>>();
+  private stackMap = new Map<StackIdent, ChangesStack<ChangeRecord>>();
 
   private initialMap = new Map<StackIdent, any>();
 
-  getStack(ident: StackIdent): Stack<ChangeRecord> {
+  getStack(ident: StackIdent): ChangesStack<ChangeRecord> {
     if (!this.stackMap.has(ident)) {
-      this.stackMap.set(ident, new Stack());
+      this.stackMap.set(ident, new ChangesStack());
     }
     return this.stackMap.get(ident);
   }
@@ -44,10 +44,9 @@ export class ChangesSpace {
 
   get haveChanges(): boolean {
     const stacksIdents = Array.from(this.stackMap.keys());
-    const progressed = this.progressed;
-    return stacksIdents
-    .map(ident => deepEqual(progressed[ident], this.initialMap.get(ident)))
-    .some(val => !val);
+    const initialEqualMapped = stacksIdents.map(ident => deepEqual(this.progressed[ident], this.initialMap.get(ident)));
+    const someNotEqualInitial = initialEqualMapped.some(val => !val);
+    return someNotEqualInitial;
   }
 
 }
