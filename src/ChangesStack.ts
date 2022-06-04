@@ -20,7 +20,7 @@ export class ChangesStack<T> {
   }
 
   undoAll(): void {
-    this.virtualIndex = 0;
+    this.virtualIndex = -1;
   }
 
   redoAll(): void {
@@ -28,7 +28,7 @@ export class ChangesStack<T> {
   }
 
   get canUndo(): boolean {
-    return this.virtualIndex > 0;
+    return this.virtualIndex > -1;
   }
 
   get canRedo(): boolean {
@@ -41,7 +41,7 @@ export class ChangesStack<T> {
   }
 
   private boundInLength(index: number): number {
-    return Math.max(0, Math.min(index, this.elements.length - 1));
+    return Math.max(-1, Math.min(index, this.elements.length - 1));
   }
 
   [Symbol.iterator]() {
@@ -49,12 +49,14 @@ export class ChangesStack<T> {
     let index = 0;
 
     return {
-      next() {
-        const result = {
+      next: () => {
+        const result =  {
           value: this.elements[index],
-          done: index >= this.virtualIndex
+          done: index >= this.virtualIndex + 1
         };
+
         index++;
+
         return result;
       }
     };
