@@ -35,8 +35,15 @@ export class ChangesSpace {
     this.validatorsMap.set(ident, validator);
   }
 
-  updateInitial(ident: StackIdent, initial: any) {
+  deleteValidator(ident: StackIdent) {
+    this.validatorsMap.delete(ident);
+  }
+
+  updateInitial(ident: StackIdent, initial: any, clearStack = true) {
     this.initialMap.set(ident, initial);
+    if (clearStack) {
+      this.getStack(ident).clear();
+    }
   }
 
   get progressed(): {[ident: StackIdent]: any} {
@@ -56,19 +63,27 @@ export class ChangesSpace {
 
   get haveChanges(): boolean {
     const stacksIdents = Array.from(this.stackMap.keys());
-    const initialEqualMapped = stacksIdents.map(ident => deepEqual(this.progressed[ident], this.initialMap.get(ident)));
-    const someNotEqualInitial = initialEqualMapped.some(val => !val);
-    return someNotEqualInitial;
+    const haveChangesMapped = stacksIdents.map(ident => this.stackHaveChanges(ident));
+    const someHaveChanges = haveChangesMapped.some(val => !!val);
+    return someHaveChanges;
   }
 
   get validated(): {[ident: StackIdent]: boolean} {
-    return Object.keys(this.stackMap).reduce((acc, ident) => {
+    return [...this.stackMap.keys()].reduce((acc, ident) => {
       const progressed = this.progressed[ident];
       const validator = this.validatorsMap.get(ident) || defaultValidator;
       const valid = validator(progressed);
       acc[ident] = valid;
       return acc;
     }, {});
+  }
+
+  stackHaveChanges(ident: StackIdent): boolean {
+    const initial = this.initialMap.get(ident);
+    const progressed = this.progressed[ident];
+    const equalInitial = deepEqual(initial, progressed);
+    const valid = this.validated[ident];
+    return !equalInitial && !!valid;
   }
 
 }
