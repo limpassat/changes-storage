@@ -1,8 +1,8 @@
 {
   "name": "changes-storage",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Utility library for work with undo-redo and saving your changes on your API",
-  "main": "index.js",
+  "main": "dist/ChangesStorage.js",
   "scripts": {
     "build": "tsc",
     "test": "jest"
@@ -17,6 +17,8 @@
     "url": "https://github.com/adaptmen/changes-storage/issues"
   },
   "homepage": "https://github.com/adaptmen/changes-storage#readme",
+  "files": ["dist/**/*", "README.md", "LICENSE"],
+  "typings": "dist/ChangesStorage.d.ts",
   "devDependencies": {
     "@babel/preset-env": "7.18.2",
     "@babel/preset-typescript": "7.17.12",

@@ -15,6 +15,11 @@ const changesStorage = new ChangesStorage();
 // Create your changes space
 const changesSpace = changesStorage.getSpace("my-space");
 
+type MyForm = {
+  field1: string;
+  field2: string;
+};
+
 // Set initial values of ...
 // form, as example
 changesSpace.getStack("my-form").updateInitial({
@@ -24,7 +29,7 @@ changesSpace.getStack("my-form").updateInitial({
 
 // Push change for field1 in the form
 changesSpace.getStack("my-form").push({
-  progress: (progressed, meta) => {
+  progress: <MyForm>(progressed, meta) => {
     progressed.field1 = meta.field1;
     return progressed;
   },

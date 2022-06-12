@@ -18,7 +18,7 @@ export class ChangesStorage {
     const spacesIdents = Array.from(this.spacesMap.keys());
     return spacesIdents
     .map(ident => this.getSpace(ident).haveChanges)
-    .some(val => !val);
+    .some(val => !!val);
   }
 
 }
