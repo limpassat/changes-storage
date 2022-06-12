@@ -21,7 +21,7 @@ describe("ChangesStack", () => {
     stack.push({progress: val => void 0, meta: {}});
     stack.clear();
     expect(stack["elements"].length).toEqual(0);
-    expect(stack["virtualIndex"]).toEqual(0);
+    expect(stack["virtualIndex"]).toEqual(-1);
   });
 
   it("undo()", () => {
@@ -102,45 +102,6 @@ describe("ChangesStack", () => {
     expect(stack.canRedo).toEqual(false);
     expect(stack["elements"].length).toEqual(2);
     expect(stack["virtualIndex"]).toEqual(1);
-  });
-
-  it("Symbol.iterator()", () => {
-    const stack = new ChangesStack<ChangeRecord>();
-    stack.push({progress: val => void 0, meta: {}});
-    stack.push({progress: val => void 0, meta: {}});
-    expect(stack["elements"].length).toEqual(2);
-    let counter = 0;
-    for (let record of stack) {
-      counter += 1;
-    }
-    expect(counter).toEqual(2);
-    counter = 0;
-    stack.push({progress: val => void 0, meta: {}});
-    stack.push({progress: val => void 0, meta: {}});
-    expect(stack["elements"].length).toEqual(4);
-    for (let record of stack) {
-      counter += 1;
-    }
-    expect(counter).toEqual(4);
-    counter = 0;
-    stack.undo();
-    stack.undo();
-    for (let record of stack) {
-      counter += 1;
-    }
-    expect(counter).toEqual(2);
-    counter = 0;
-    stack.undoAll();
-    for (let record of stack) {
-      counter += 1;
-    }
-    expect(counter).toEqual(0);
-    counter = 0;
-    stack.redoAll();
-    for (let record of stack) {
-      counter += 1;
-    }
-    expect(counter).toEqual(4);
   });
 
 });

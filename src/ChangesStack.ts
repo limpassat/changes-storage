@@ -37,29 +37,15 @@ export class ChangesStack<T> {
 
   clear() {
     this.elements = [];
-    this.virtualIndex = 0;
+    this.virtualIndex = -1;
+  }
+
+  getCutElements() {
+    return this.elements.slice(0, this.virtualIndex + 1);
   }
 
   private boundInLength(index: number): number {
     return Math.max(-1, Math.min(index, this.elements.length - 1));
-  }
-
-  [Symbol.iterator]() {
-
-    let index = 0;
-
-    return {
-      next: () => {
-        const result =  {
-          value: this.elements[index],
-          done: index >= this.virtualIndex + 1
-        };
-
-        index++;
-
-        return result;
-      }
-    };
   }
 
 }
