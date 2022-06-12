@@ -1,5 +1,6 @@
+import equal from "fast-deep-equal";
 
 
 export function deepEqual(a, b): boolean {
-  return JSON.stringify(a) === JSON.stringify(b);
+  return equal(a, b);
 }

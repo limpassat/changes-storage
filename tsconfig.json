@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "esModuleInterop": true,
     "target": "es6",
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
-    "sourceMap": true,
+    "sourceMap": false,
     "baseUrl": ".",
     "outDir": "./dist",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "declaration": true
   },
   "lib": ["es2015"],
   "include": [
